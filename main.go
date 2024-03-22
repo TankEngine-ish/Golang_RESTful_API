@@ -25,6 +25,15 @@ func main() {
 	checkError(err)
 	defer db.Close()
 
+	result, err := db.Exec("insert into data values(5, 'xyz')")
+	checkError(err)
+	lastInsertedId, err := result.LastInsertId()
+	fmt.Println("lastInsertedId: ", lastInsertedId)
+	checkError(err)
+	rowsAffected, err := result.RowsAffected()
+	fmt.Println("rowsAffected: ", rowsAffected)
+	checkError(err)
+
 	rows, err := db.Query("SELECT * FROM data")
 	checkError(err)
 
