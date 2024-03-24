@@ -31,6 +31,10 @@ func (app *App) Run(address string) {
 	log.Fatal(http.ListenAndServe(address, app.Router))
 }
 
+func (app *App) handleRoutes() {
+	app.Router.HandleFunc("/products", getProducts).Methods("GET")
+}
+
 // ******** OLD CODE ********
 //
 // package main
