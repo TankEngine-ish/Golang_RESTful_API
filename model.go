@@ -1,6 +1,9 @@
 package main
 
-import "database/sql"
+import (
+	"database/sql"
+	"fmt"
+)
 
 type product struct {
 	ID       int     `json:"id"`
@@ -28,4 +31,15 @@ func getProducts(db *sql.DB) ([]product, error) {
 
 	}
 	return products, nil
+}
+
+func (p *product) getProduct(db *sql.DB) error {
+	query := fmt.Sprintf("SELECT name, quantity, price FROM products where id=%v", p.ID)
+	row := db.QueryRow(query)
+	err := row.Scan(&p.Name, &p.Quantity, &p.Price)
+	if err != nil {
+		return err
+	}
+	return nil
+
 }
