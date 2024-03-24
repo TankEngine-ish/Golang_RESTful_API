@@ -3,48 +3,77 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"log"
 
-	_ "github.com/go-sql-driver/mysql" // _ means we are not using this package directly
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/gorilla/mux"
 )
 
-func checkError(e error) {
-	if e != nil {
-		log.Fatalln(e)
-	}
+type App struct {
+	Router *mux.Router
+	DB     *sql.DB
 }
 
-type Data struct {
-	id   int
-	name string
-}
-
-func main() {
+func (app *App) Initialise() error {
 	connectionString := fmt.Sprintf("%v:%v@tcp(127.0.0.1:3306)/%v", DBUser, DBPassword, DBName)
-	db, err := sql.Open("mysql", connectionString)
-	checkError(err)
-	defer db.Close()
-
-	result, err := db.Exec("insert into data values(5, 'xyz')")
-	checkError(err)
-	lastInsertedId, err := result.LastInsertId()
-	fmt.Println("lastInsertedId: ", lastInsertedId)
-	checkError(err)
-	rowsAffected, err := result.RowsAffected()
-	fmt.Println("rowsAffected: ", rowsAffected)
-	checkError(err)
-
-	rows, err := db.Query("SELECT * FROM data")
-	checkError(err)
-
-	for rows.Next() {
-		var data Data
-		err = rows.Scan(&data.id, &data.name)
-		checkError(err)
-		fmt.Println(data)
-
+	var err error
+	app.DB, err = sql.Open("mysql", connectionString)
+	if err != nil {
+		return err
 	}
+	app.Router = mux.NewRouter().StrictSlash(true)
+
+	return nil // returns nil if no error
 }
+
+// ******** OLD CODE ********
+//
+// package main
+
+// import (
+// 	"database/sql"
+// 	"fmt"
+// 	"log"
+
+// 	_ "github.com/go-sql-driver/mysql" // _ means we are not using this package directly
+// )
+
+// func checkError(e error) {
+// 	if e != nil {
+// 		log.Fatalln(e)
+// 	}
+// }
+
+// type Data struct {
+// 	id   int
+// 	name string
+// }
+
+// func main() {
+// 	connectionString := fmt.Sprintf("%v:%v@tcp(127.0.0.1:3306)/%v", DBUser, DBPassword, DBName)
+// 	db, err := sql.Open("mysql", connectionString)
+// 	checkError(err)
+// 	defer db.Close()
+
+// 	result, err := db.Exec("insert into data values(5, 'xyz')")
+// 	checkError(err)
+// 	lastInsertedId, err := result.LastInsertId()
+// 	fmt.Println("lastInsertedId: ", lastInsertedId)
+// 	checkError(err)
+// 	rowsAffected, err := result.RowsAffected()
+// 	fmt.Println("rowsAffected: ", rowsAffected)
+// 	checkError(err)
+
+// 	rows, err := db.Query("SELECT * FROM data")
+// 	checkError(err)
+
+// 	for rows.Next() {
+// 		var data Data
+// 		err = rows.Scan(&data.id, &data.name)
+// 		checkError(err)
+// 		fmt.Println(data)
+
+// 	}
+// } //
 
 // import (
 // 	"encoding/json"
