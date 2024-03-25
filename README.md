@@ -19,10 +19,15 @@ The project is divided into several files:
 The API provides the following endpoints:
 
 ``GET /products``: Fetch all products.
+
 ``GET /product/{id}``: Fetch a single product by its ID.
+
 ``POST /product``: Create a new product.
+
 ``PUT /product/{id}``: Update an existing product by its ID.
+
 ``DELETE /product/{id}``: Delete a product by its ID.
+
 
 ## Running the Tests
 To run the tests, use the ``go test`` command in the root directory of the project.
