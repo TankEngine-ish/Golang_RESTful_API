@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -71,5 +73,28 @@ func sendRequest(request *http.Request) *httptest.ResponseRecorder {
 	recorder := httptest.NewRecorder()
 	a.Router.ServeHTTP(recorder, request)
 	return recorder
+
+}
+
+func TestCreateProduct(t *testing.T) {
+	clearTable()
+	var product = []byte(`{"name": "keyboard", "quantity": 1, "price": 140}`)
+
+	req, _ := http.NewRequest("POST", "/product", bytes.NewBuffer(product))
+
+	req.Header.Set("Content-Type", "application/json")
+
+	response := sendRequest(req)
+	checkStatusCode(t, http.StatusCreated, response.Code)
+
+	var m map[string]interface{}
+	json.Unmarshal(response.Body.Bytes(), &m)
+	if m["name"] != "keyboard" {
+		t.Errorf("Expected name: %v, Got: %v", "keyboard", m["name"])
+	}
+
+	if m["quantity"] != 1.0 {
+		t.Errorf("Expected quantity: %v, Got: %v", 1.0, m["quantity"])
+	}
 
 }
