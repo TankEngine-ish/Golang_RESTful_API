@@ -98,3 +98,18 @@ func TestCreateProduct(t *testing.T) {
 	}
 
 }
+
+func TestDeleteProduct(t *testing.T) {
+
+	clearTable()
+	addProduct("speakers", 10, 10)
+
+	req, _ := http.NewRequest("GET", "/product/1", nil)
+	response := sendRequest(req)
+	checkStatusCode(t, http.StatusOK, response.Code)
+
+	req, _ = http.NewRequest("DELETE", "/product/1", nil)
+	response = sendRequest(req)
+	checkStatusCode(t, http.StatusOK, response.Code)
+
+}
