@@ -79,9 +79,7 @@ func sendRequest(request *http.Request) *httptest.ResponseRecorder {
 func TestCreateProduct(t *testing.T) {
 	clearTable()
 	var product = []byte(`{"name": "keyboard", "quantity": 1, "price": 140}`)
-
 	req, _ := http.NewRequest("POST", "/product", bytes.NewBuffer(product))
-
 	req.Header.Set("Content-Type", "application/json")
 
 	response := sendRequest(req)
@@ -111,5 +109,40 @@ func TestDeleteProduct(t *testing.T) {
 	req, _ = http.NewRequest("DELETE", "/product/1", nil)
 	response = sendRequest(req)
 	checkStatusCode(t, http.StatusOK, response.Code)
+
+}
+
+func TestUpdateProduct(t *testing.T) {
+	clearTable()
+	addProduct("speakers", 10, 10)
+	req, _ := http.NewRequest("GET", "/product/1", nil)
+	response := sendRequest(req)
+
+	var oldValue map[string]interface{}
+	json.Unmarshal(response.Body.Bytes(), &oldValue)
+
+	var product = []byte(`{"name": "keyboard", "quantity": 1, "price": 10}`)
+	req, _ = http.NewRequest("PUT", "/product/1", bytes.NewBuffer(product))
+	req.Header.Set("Content-Type", "application/json")
+
+	response = sendRequest(req)
+	var newValue map[string]interface{}
+	json.Unmarshal(response.Body.Bytes(), &newValue)
+
+	if oldValue["id"] != newValue["id"] {
+		t.Errorf("Expected id: %v, Got: %v", newValue["id"], oldValue["id"])
+	}
+
+	if oldValue["name"] == newValue["name"] {
+		t.Errorf("Expected name: %v, Got: %v", newValue["name"], oldValue["name"])
+	}
+
+	if oldValue["price"] != newValue["price"] {
+		t.Errorf("Expected price: %v, Got: %v", newValue["price"], oldValue["price"])
+	}
+
+	if oldValue["quantity"] == newValue["quantity"] {
+		t.Errorf("Expected quantity: %v, Got: %v", newValue["quantity"], oldValue["quantity"])
+	}
 
 }
