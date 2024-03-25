@@ -1,4 +1,4 @@
-module github.com/TankEngine-ish/Golang_RESTful_API
+module example.com/my-inventory
 
 go 1.18
 
