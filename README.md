@@ -37,10 +37,15 @@ The application connects to a MySQL database. The database name, user, and passw
 This project uses the following Go packages:
 
 ``database/sql``: For interacting with the database.
+
 ``github.com/go-sql-driver/mysql``: The MySQL driver for Go's database/sql package.
+
 ``github.com/gorilla/mux``: A powerful HTTP router and URL matcher for building Go web servers.
+
 ``net/http``: For building HTTP servers and clients.
+
 ``encoding/json``: For encoding and decoding JSON.
+
 
 ## Deployment
 The API was later deployed via GitHub Actions.
