@@ -57,4 +57,12 @@ The API was later deployed via GitHub Actions.
 
 ## Notes
 
-I can say that it's kinda nice not having to install a ton of third party packages and dependencies just to create a simple API like in Javascript. This is my fourth API project by now.
+* I can say that it's kinda nice not having to install a ton of third party packages and dependencies just to create a simple API like in Javascript. This is my fourth API project by now.
+
+* The content of constants.go file is just placeholder information. Of course I'm not going to upload sensitive credentials to github...
+
+* Once again I successfully deployed another project via github actions.
+
+![alt text](<media/screengrab of pipeline.png>)
+
+
