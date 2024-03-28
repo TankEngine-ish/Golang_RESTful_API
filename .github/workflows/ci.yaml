@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set up MySQL
-        run: |
+        run: |  # The literal style is denoted by the “|” indicator. It allows you to write multiple lines of text in a single string.
           sudo /etc/init.d/mysql start
           sudo mysql -e 'ALTER USER "${{env.DB_USER}}"@"localhost" IDENTIFIED BY "${{env.DB_PASSWORD}}";' -uroot -proot
           sudo mysql -e 'CREATE DATABASE ${{env.DB_NAME}};' -u${{env.DB_USER}} -p${{env.DB_PASSWORD}}
