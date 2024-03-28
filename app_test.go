@@ -36,6 +36,7 @@ func createTable() {
 	}
 }
 
+// clearing the table ensures that tests run independently of each other without any leftover data from previous tests
 func clearTable() {
 	a.DB.Exec("DELETE FROM products")
 	a.DB.Exec("ALTER TABLE products AUTO_INCREMENT = 1")
@@ -52,6 +53,8 @@ func addProduct(name string, quantity int, price float64) {
 
 	a.DB.Exec(query)
 }
+
+//******* API METHOD TESTS BELOW ******** //
 
 func TestGetProduct(t *testing.T) {
 	// Clear the table
